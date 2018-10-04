@@ -1,6 +1,0 @@
-wgp.alpha.ref.esn.gov.uk
-syncgw.alpha.ref.esn.gov.uk
-wds.alpha.ref.esn.gov.uk
-idm.alpha.ref.esn.gov.uk
-poc1p.alpha.ref.esn.gov.uk
-ns1.alpha.ref.esn.gov.uk
