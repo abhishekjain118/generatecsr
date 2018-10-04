@@ -1,5 +1,0 @@
-OU:MSS
-O:Motorola Solutions UK Ltd.
-L:London
-ST:London
-C:GB
