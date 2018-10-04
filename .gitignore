@@ -1,0 +1,6 @@
+# ignore files in cnf folders
+cnf/
+
+# ignore files in key_and_csr folders
+key_and_csr/
+
