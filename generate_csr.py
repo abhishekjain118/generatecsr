@@ -18,7 +18,7 @@ def create_folder(folder_name): #done
         process = subprocess.Popen(cmd_mkdir, stdout=subprocess.PIPE, stderr=subprocess.PIPE) #now makedir cnf
         output, error = process.communicate()
     else:
-        print("cnf folder created")
+        print(folder_name+" folder created")
         print(output)
 
 def read_config_files(): #done
@@ -58,6 +58,7 @@ def generate_cnf_files(fqdn,values_in_config_files):
           + "\nC = " + values_in_config_files[4]
           + "\n\n[ext]\n" +
           "subjectAltName=DNS:" + fqdn)
+    print("cnf file generate for "+ fqdn)
 
 def generate_private_key(kodiak_vm,base_path):
     key_path = "key_and_csr\\"
@@ -65,34 +66,42 @@ def generate_private_key(kodiak_vm,base_path):
     process = subprocess.Popen(cmd_genrsa.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
     if re.search(r'Generating RSA private key', str(error)):
-        print("generate private key success")
+        print("generate private key for "+kodiak_vm+": success")
     else:
-        print("generate private key failed.")
+        print("generate private key for "+kodiak_vm+": failed.")
         print(error)
 
+def generate_csr(kodiak_vm, base_path):
+    key_path = "key_and_csr\\"
+    cmd_gencsr = base_path + "openssl req -new -sha256 -key "\
+                 + key_path + kodiak_vm + ".key -config cnf/"+kodiak_vm+".cnf -out "+key_path+kodiak_vm+".csr"
+    print(cmd_gencsr)
+    process = subprocess.Popen(cmd_gencsr.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, error = process.communicate()
+    if (error):
+        print("generate CSR for "+kodiak_vm+": failed.")
+        print(error)
+    else:
+        print("generate CSR for "+kodiak_vm+": success")
 
 def main():
-    #date_time = datetime.utcnow().strftime('%d%m%y_%H%M%S')
-    #print(date_time)
     base_path = "C:\\OpenSSL-Win64\\bin\\"
-    folder_name = "cnf"
+    cnf_folder = "cnf"
 
-    create_folder(folder_name) #create cnf folder. rename old cnf if exists.
+    create_folder(cnf_folder) #create cnf folder. rename old cnf if exists.
     fqdns, kodiak_vms_in_fqdns, values_in_config_files = read_config_files() #read config and fqdns files.
 
     print(fqdns)
     print(kodiak_vms_in_fqdns)
     print(values_in_config_files)
 
-    #cnf_folder_path = base_path+folder_name+"\\"
-    #print(cnf_folder_path)
     for fqdn in fqdns:
         generate_cnf_files(fqdn,values_in_config_files) #generate cnf files and put them in cnf folder
 
-    create_folder("key_and_csr")
+    create_folder("key_and_csr") # create folder called key_and_csr
     for kodiak_vm in kodiak_vms_in_fqdns:
-        generate_private_key(kodiak_vm,base_path)
-
+        generate_private_key(kodiak_vm,base_path) # generate private keys for all entries in kodiak_vms.
+        generate_csr(kodiak_vm, base_path) # generate CSRs for all entries in kodiak_vms.
 
 if __name__ == "__main__":
     main()
