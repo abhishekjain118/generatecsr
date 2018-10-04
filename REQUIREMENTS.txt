@@ -1,0 +1,18 @@
+Preconditions: 
+1. download and install OpenSSL (not automated, see procedure to install)
+2. open command prompt and go to (C:\OpenSSL-win32\bin) //not required
+- mkdir cnf folder // done
+
+3. generate cnf file. //
+- read from config file // done
+
+4. place the cnf file in c:\openssl-win32\bin\cnf\
+5. cnf file is with SAN Extension
+6. populate values in a config file. .py will read from config. 
+7. values are: CN, OU, O, L, ST, C
+8. generate the private key
+9. generate the CSR. move key and CSR in a folder unique folder.
+10. make the py script to .exe
+
+11. generate certs from CSR using CMF (not automated yet)
+
