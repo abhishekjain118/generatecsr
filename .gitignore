@@ -4,3 +4,5 @@ cnf/
 # ignore files in key_and_csr folders
 key_and_csr/
 
+fqdn.txt
+.idea/
